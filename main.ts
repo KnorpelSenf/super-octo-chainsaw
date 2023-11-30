@@ -43,4 +43,12 @@ client.on("message", async (ctx) => {
   await ctx.reply("Send /ping");
 });
 
-await client.start(env('BOT_TOKEN'));
+if (Deno.env.get("USER")) {
+  await client.start({
+    phone: () => prompt("Enter your phone number:")!,
+    code: () => prompt("Enter the code you received:")!,
+    password: () => prompt("Enter your account's password:")!,
+  });
+} else {
+  await client.start(env("BOT_TOKEN"));
+}
